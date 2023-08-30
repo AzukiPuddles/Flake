@@ -8,7 +8,7 @@
     specialArgs = {inherit self inputs;};
     system = "x86_64-linux";
     modules = [
-      ./hosts/nixos/configuration.nix
+      ./../hosts/nixos/configuration.nix
       ./bootloader.nix
       ./desktop.nix
       ./network.nix
