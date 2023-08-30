@@ -11,6 +11,7 @@
     ...
   } @ inputs: let
     system = "x86_64-linux";
+    defaultPackage = self.flake;
     selfPkgs = import ./pkgs;
   in {
     nixosConfigurations = import ./modules/core/default.nix {
