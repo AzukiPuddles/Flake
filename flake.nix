@@ -9,7 +9,7 @@
     nixpkgs,
     self,
     ...
-  } @ inputs:
+  }:
   nixosConfigurations = import ./system/core.nix {
     inherit self nixpkgs inputs;
   };
