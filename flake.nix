@@ -9,8 +9,11 @@
     nixpkgs,
     self,
     ...
-  }:
-  nixosConfigurations = import ./system/core.nix {
-    inherit self nixpkgs inputs;
+  } @ inputs: let
+    selfPkgs = import ./pkgs;
+  in {
+    nixosConfigurations = import ./modules/core/default.nix {
+      inherit self nixpkgs inputs;
+    };
   };
 }
