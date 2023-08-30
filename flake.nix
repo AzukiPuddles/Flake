@@ -14,7 +14,7 @@
     defaultPackage = self.flake;
     selfPkgs = import ./pkgs;
   in {
-    nixosConfigurations = import ./modules/core/default.nix {
+    nixosConfigurations = import ./core/default.nix {
       inherit self nixpkgs inputs;
     };
   };
