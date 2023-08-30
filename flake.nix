@@ -14,9 +14,6 @@
     selfPkgs = import ./pkgs;
   in {
     nixosConfigurations = import ./system/core.nix {
-      inherit self nixpkgs inputs;
-    };
-    nixosConfigurations = {
       nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
@@ -24,5 +21,7 @@
         ];
         specialArgs = { inherit inputs; };
       };
+      inherit self nixpkgs inputs;
+    };
   };
 }
