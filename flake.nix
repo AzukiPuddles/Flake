@@ -10,6 +10,7 @@
     self,
     ...
   } @ inputs: let
+    system = "x86_64-linux";
     selfPkgs = import ./pkgs;
   in {
     nixosConfigurations = import ./modules/core/default.nix {
