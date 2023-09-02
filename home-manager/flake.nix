@@ -1,45 +1,30 @@
 {
-  description = "Plasma Manager Example";
-
+  description = "Home Manager configuration of azuki";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
-
-    home-manager.url = "github:nix-community/home-manager/release-23.05";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
-
-    plasma-manager.url = "github:pjones/plasma-manager";
-    plasma-manager.inputs.nixpkgs.follows = "nixpkgs";
-    plasma-manager.inputs.home-manager.follows = "home-manager";
+    # Specify the source of Home Manager and Nixpkgs.
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    spicetify-nix.url = github:the-argus/spicetify-nix;
   };
-
-  outputs = inputs:
+  outputs = { nixpkgs, home-manager, spicetify-nix, ... }:
     let
       system = "x86_64-linux";
-      username = "azuki";
-    in
-    {
-      # Standalone Home Manager Setup:
-      homeConfigurations.${username} =
-        inputs.home-manager.lib.homeManagerConfiguration {
-          # Ensure Plasma Manager is available:
-          extraModules = [
-            inputs.plasma-manager.homeManagerModules.plasma-manager
+      pkgs = nixpkgs.legacyPackages.${system};
+    in {
+      homeConfigurations."azuki" = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        extraSpecialArgs = {inherit spicetify-nix;};
+        # Specify your home configuration modules here, for example,
+        # the path to your home.nix.
+        modules = [
+          ./home.nix
+          ./spicetify.nix # file where you configure spicetify
           ];
-
-          # Specify the path to your home configuration here:
-          configuration = import ./home.nix;
-
-          inherit system username;
-          homeDirectory = "/home/${username}";
-        };
-
-      # A shell where Home Manager can be used:
-      devShells.${system}.default =
-        let pkgs = import inputs.nixpkgs { inherit system; }; in
-        pkgs.mkShell {
-          buildInputs = [
-            inputs.home-manager.packages.${system}.home-manager
-          ];
-        };
+        # Optionally use extraSpecialArgs
+        # to pass through arguments to home.nix
+      };
     };
 }

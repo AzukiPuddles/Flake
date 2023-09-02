@@ -4,6 +4,7 @@
     btop
     git
     neofetch
-    kwrite
+    vscode
+    firefox
   ];
 }
