@@ -4,5 +4,6 @@
     btop
     git
     neofetch
+    kwrite
   ];
 }
